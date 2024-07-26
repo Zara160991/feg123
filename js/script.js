@@ -1,6 +1,18 @@
 "use strict";
 
-const countOfFilms = +prompt("Քանի ֆիլմ եք վերջերս դիտել");
+let countOfFilms;
+
+function init(){
+  countOfFilms = +prompt("Քանի ֆիլմ եք վերջերս դիտել");
+
+  while (countOfFilms == "" || countOfFilms == null || isNaN(countOfFilms)) {
+    countOfFilms = +prompt("Քանի ֆիլմ եք վերջերս դիտել");
+  }
+}
+
+init()
+
+
 const DB = {
     count: countOfFilms,
     movies: {},
@@ -10,7 +22,8 @@ const DB = {
     privat: false
 };
 
-for (let i = 0; i < 2; i++) {
+function rememberAndCreateUserFilms() {
+  for (let i = 0; i < 2; i++) {
     const filmName = prompt("Որ ֆիլմ եք վերջերս դիտել");
     const filmRate = +prompt(`Ինչքան եք գնահատում ${filmName} ֆիլմը`);
 
@@ -21,18 +34,29 @@ for (let i = 0; i < 2; i++) {
         console.log("Reject");
         i--;
     }
+}
 
 }
 
-if (DB.count < 10) {
-  DB.status = "Դուք դիտել եք բավականին քիչ ֆիլմեր";
-} else if (DB.count >= 10 && DB.count < 30) {
-  DB.status = "Դուք դասական ֆիլմ դիտող եք";  
-} else if (DB.count >= 30) {
- DB.status = "Դուք կինոման եք !"
-} else {
-    console.log("Տեղի է ունեցել խնդիր․");
+function detectUserPersonalLevel() {
+  if (DB.count < 10) {
+    DB.status = "Դուք դիտել եք բավականին քիչ ֆիլմեր";
+  } else if (DB.count >= 10 && DB.count < 30) {
+    DB.status = "Դուք դասական ֆիլմ դիտող եք";  
+  } else if (DB.count >= 30) {
+   DB.status = "Դուք կինոման եք !"
+  } else {
+      console.log("Տեղի է ունեցել խնդիր․");
+  }
+  
 }
 
+function checkDBPrivatStatus(state) {
+ state ? console.log("Sorry but DB is not visible") : console.log(DB);
+}
 
-console.log(DB)
+rememberAndCreateUserFilms();
+detectUserPersonalLevel();
+checkDBPrivatStatus(DB.privat);
+
+
