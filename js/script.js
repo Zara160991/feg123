@@ -17,7 +17,7 @@ const DB = {
     count: countOfFilms,
     movies: {},
     actors: {},
-    genrer: [],
+    genres: [],
     status: null,
     privat: false
 };
@@ -54,8 +54,14 @@ function detectUserPersonalLevel() {
 function checkDBPrivatStatus(state) {
  state ? console.log("Sorry but DB is not visible") : console.log(DB);
 }
-
+ function userFavoriteGenres() {
+  for (let i = 0; i < 2; i++) {
+    DB.genres.push(prompt(`Ձեր նախընտրելի ժանրը ${i + 1}`))
+  }
+}
+  
 rememberAndCreateUserFilms();
+userFavoriteGenres();
 detectUserPersonalLevel();
 checkDBPrivatStatus(DB.privat);
 
