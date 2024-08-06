@@ -1,44 +1,36 @@
 "use strict";
 
-let countOfFilms;
-
-function init(){
-  countOfFilms = +prompt("Քանի ֆիլմ եք վերջերս դիտել");
-
-  while (countOfFilms == "" || countOfFilms == null || isNaN(countOfFilms)) {
-    countOfFilms = +prompt("Քանի ֆիլմ եք վերջերս դիտել");
-  }
-}
-
-init()
-
-
 const DB = {
-    count: countOfFilms,
+    count: 0,
     movies: {},
     actors: {},
     genres: [],
     status: null,
-    privat: false
-};
-
-function rememberAndCreateUserFilms() {
-  for (let i = 0; i < 2; i++) {
-    const filmName = prompt("Որ ֆիլմ եք վերջերս դիտել");
-    const filmRate = +prompt(`Ինչքան եք գնահատում ${filmName} ֆիլմը`);
-
-    if (filmName != null && filmRate != null  && filmName != "" && filmRate != "" &&  filmName.length < 50) {
-        DB.movies[filmName] = filmRate; 
-        console.log("Resolve");
- } else {
-        console.log("Reject");
-        i--;
+    privat: false,
+    init() {
+      DB.count = +prompt("Քանի ֆիլմ եք վերջերս դիտել");
+    
+      while (DB.count == "" || DB.count == null || isNaN(DB.count)) {
+        DB.count = +prompt("Քանի ֆիլմ եք վերջերս դիտել");
+      }
+    },
+    rememberAndCreateUserFilms() {
+      for (let i = 0; i < 2; i++) {
+        const filmName = prompt("Որ ֆիլմ եք վերջերս դիտել");
+        const filmRate = +prompt(`Ինչքան եք գնահատում ${filmName} ֆիլմը`);
+    
+        if (filmName != null && filmRate != null  && filmName != "" && filmRate != "" &&  filmName.length < 50) {
+            DB.movies[filmName] = filmRate; 
+            console.log("Resolve");
+     } else {
+            console.log("Reject");
+            i--;
+        }
     }
-}
+    
+    },
 
-}
-
-function detectUserPersonalLevel() {
+    detectUserPersonalLevel() {
   if (DB.count < 10) {
     DB.status = "Դուք դիտել եք բավականին քիչ ֆիլմեր";
   } else if (DB.count >= 10 && DB.count < 30) {
@@ -49,20 +41,26 @@ function detectUserPersonalLevel() {
       console.log("Տեղի է ունեցել խնդիր․");
   }
   
-}
+    },
+    checkDBPrivatStatus(state) {
+  state ? console.log("Sorry but DB is not visible") : console.log(DB);
+    },
+    userFavoriteGenres() {
+   for (let i = 0; i < 2; i++) {
+     DB.genres.push(prompt(`Ձեր նախընտրելի ժանրը ${i + 1}`))
+   }
+    },
+    startApp() {
+      DB.init();
+      DB.rememberAndCreateUserFilms();
+      DB.userFavoriteGenres();
+      DB.detectUserPersonalLevel();
+      DB.checkDBPrivatStatus(DB.privat);
+    }
+   };
 
-function checkDBPrivatStatus(state) {
- state ? console.log("Sorry but DB is not visible") : console.log(DB);
-}
- function userFavoriteGenres() {
-  for (let i = 0; i < 2; i++) {
-    DB.genres.push(prompt(`Ձեր նախընտրելի ժանրը ${i + 1}`))
-  }
-}
-  
-rememberAndCreateUserFilms();
-userFavoriteGenres();
-detectUserPersonalLevel();
-checkDBPrivatStatus(DB.privat);
+   DB.startApp();
+
+
 
 
